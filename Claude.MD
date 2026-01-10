@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Ketuś** is a web-based strategic keto diet and biohacking analysis application. It combines AI-powered nutritional advice with personal health tracking to help users optimize their ketogenic journey through long-term trend analysis rather than daily fluctuations.
+**Ketuś** is an intelligent support ecosystem for people on a ketogenic diet and biohackers. Unlike standard calorie counters, Ketuś focuses on biochemistry, long-term trends, and well-being. The character of Ketuś (an avocado mascot) acts as a mentor who analyzes data rather than just collecting it.
 
 **Project Name**: Copy of Ketuś - Twój Strategiczny Analityk Keto
 **Description**: Expert in keto and biohacking that monitors your progress scientifically and flexibly, focusing on long-term biochemical trends.
@@ -11,12 +11,14 @@
 
 ## Core Purpose
 
-This application serves as a personalized keto coach that:
-- Analyzes meal choices for nutritional density and ketosis impact
-- Tracks key health metrics (weight, energy/well-being, sleep quality)
-- Provides evidence-based advice grounded in physiology (insulin, ketone bodies, mineral balance)
-- Focuses on long-term weekly trends over short-term daily variations
-- Offers a friendly, no-nonsense approach to biochemical optimization
+This application serves as a personalized keto mentor that:
+- **Analyzes, not just collects**: Ketuś interprets data and provides strategic insights
+- Evaluates meal choices for nutritional density and ketosis impact
+- Tracks key biometric metrics (weight, energy/well-being, sleep quality)
+- Provides evidence-based advice grounded in physiology (insulin, dopamine, cortisol, ketone bodies, mineral balance)
+- Focuses on long-term weekly trends over short-term daily fluctuations
+- Offers a friendly, buddy-like approach to biochemical optimization
+- Understands hormonal mechanisms and explains biological processes
 
 ## Tech Stack
 
@@ -29,7 +31,12 @@ This application serves as a personalized keto coach that:
 
 ### Backend Services
 - **Google Gemini AI** (@google/genai 1.35.0) - AI chat assistant (gemini-3-flash-preview model)
-- **Supabase** (@supabase/supabase-js 2.48.1) - Authentication and database
+- **Supabase** (@supabase/supabase-js 2.48.1) - Authentication and database (PostgreSQL with RLS)
+
+### Architecture
+- **Single-page application** with import maps (does not require complex build-step in sandbox environments)
+- **Component-based** architecture with React
+- **Function calling** integration with Gemini AI
 
 ### Design System
 - Dark theme with purple accent colors (#0f041a background)
@@ -106,10 +113,15 @@ The AI uses Google's function calling feature to intelligently log metrics:
 
 ### 4. Health Metrics Dashboard
 - **Weight Tracking**: Shows current weight with trend indicators
+  - Area chart visualization for weight trends over time
 - **Energy/Well-being**: Tracks energy levels (1-10 scale)
+  - Line chart for well-being progression
 - **Sleep Quality**: Monitors sleep quality (1-10 scale)
-- **Visual Analytics**: Charts and graphs using Recharts
-- **Historical Logs**: Table view of all past entries
+- **Visual Analytics**: Responsive biometric charts using Recharts
+  - Area charts for weight data
+  - Line charts for well-being and sleep metrics
+  - Automatic scaling and responsive design
+- **Historical Logs**: Table view of all past entries with date, weight, and progress notes
 
 ### 5. Data Persistence
 - **Backend**: Supabase PostgreSQL database
@@ -144,21 +156,55 @@ npm run preview      # Preview production build
 
 ## UI Components
 
-### Header
-- Ketuś logo with fallback
-- User name display with premium badge
+### App.tsx
+**Main state controller** - Orchestrates the entire application:
+- Manages Supabase session and authentication state
+- Handles data synchronization between UI and database
+- Controls layout (Dashboard + Chat grid)
+- Coordinates chat message flow and AI responses
+- Implements `onLogMetrics` callback for function calling integration
+
+### ChatWindow.tsx
+**Conversational interface** - Handles user interaction with Ketuś:
+- Message history display with role-based styling (user vs assistant)
+- Loading states with Ketuś Thinking animation
+- "Thinking" state indicator when AI is processing
+- Input field with send functionality
+- Auto-scroll to latest message
+
+### Dashboard.tsx
+**Data visualization component** - Presents biometric data:
+- Processes `keto_logs` data for chart rendering
+- Area charts for weight trends (using Recharts)
+- Line charts for well-being and sleep quality
+- Responsive chart sizing and scaling
+- Handles empty state when no data exists
+
+### Auth.tsx
+**Authentication UI** - Complete login/registration system:
+- Toggle between sign-up and sign-in modes
+- Email/password authentication via Supabase
+- Captures first name and last name during registration
+- Stores user metadata in profiles table via trigger
+- Error handling and loading states
+
+### Layout Structure
+
+#### Header
+- Ketuś logo with fallback to Bot icon
+- User name display with premium badge (Crown icon)
 - Logout and settings buttons
 - Glassmorphic fixed header
 
-### Main Dashboard (Left Column)
+#### Main Dashboard (Left Column - 8/12 cols)
 - Three metric cards: Weight, Energy, Sleep
 - Interactive charts and visualizations
 - Historical logs table with date, weight, and status notes
 
-### Chat Window (Right Column)
+#### Chat Window (Right Column - 4/12 cols)
 - Sticky sidebar on desktop
 - Message history with user/assistant roles
-- Loading states with animations
+- Loading states with Ketuś Thinking mascot
 - Input field for user messages
 
 ### Visual Design Elements
@@ -169,11 +215,33 @@ npm run preview      # Preview production build
 
 ## Database Schema (Supabase)
 
-Expected tables:
-- `logs` - User metric entries
-  - Columns: id, date, weight, well_being, sleep_quality, progress_note, user_id
-- `profiles` - User profile data
-  - Columns: first_name, last_name, is_premium
+The project relies on two main tables and a trigger mechanism:
+
+### Tables
+
+#### `profiles`
+Extension of the `auth.users` table:
+- **Fields**:
+  - `id` (UUID, primary key, references auth.users)
+  - `first_name` (text)
+  - `last_name` (text)
+  - `email` (text)
+  - `is_premium` (boolean, default false)
+- **Trigger**: `on_auth_user_created` automatically creates a profile upon user registration
+
+#### `keto_logs`
+Stores biometric measurements:
+- **Fields**:
+  - `id` (UUID, primary key)
+  - `user_id` (UUID, foreign key to auth.users)
+  - `date` (date)
+  - `weight` (numeric)
+  - `well_being` (integer, 1-10 scale)
+  - `sleep_quality` (integer, 1-10 scale)
+  - `progress_note` (text)
+- **Security**: Protected by Row Level Security (RLS)
+  - Users can only see their own data: `auth.uid() = user_id`
+  - SELECT, INSERT, UPDATE policies enforce user isolation
 
 ## Key Technical Decisions
 
@@ -185,14 +253,16 @@ Expected tables:
 
 ## Development Notes
 
-### Image Assets
-The app references several image files:
-- `input_file_0.png` - Weight/scale icon
-- `input_file_1.png` - Energy/heart icon
-- `input_file_2.png` - Ketuś logo/avatar
-- `input_file_3.png` - Sleep/moon icon
+### Image Assets (Ketuś Mascot)
+The Ketuś character (avocado mascot) is crucial for UX. Each expression serves a specific purpose:
 
-All images have fallback to lucide-react icons.
+- `input_file_0.png` - **Ketuś Confident** - Used for weight/profile icon, represents determination
+- `input_file_1.png` - **Ketuś Joyful/Ecstatic** - Used in greetings and celebrating successes
+- `input_file_2.png` - **Ketuś Waving** - Main logo, welcoming gesture
+- `input_file_3.png` - **Ketuś Smiling** - Used for sleep/regeneration icon, represents rest
+- `input_file_4.png` - **Ketuś Thinking/Analytical** - Displayed when AI answer is loading, shows analysis in progress
+
+All images have fallback to lucide-react icons in case of loading errors.
 
 ### Polish Language
 The entire UI is in Polish:
@@ -208,15 +278,43 @@ The entire UI is in Polish:
 - Dashboard: 8 columns, Chat: 4 columns on large screens
 - Sticky chat sidebar on desktop
 
-## Future Considerations
+## Future Development Roadmap
+
+### Planned Features
+
+#### 1. Premium System
+- The `profiles` table already has an `is_premium` column ready for implementation
+- **Proposed**: Lock advanced trend analysis features for non-premium users
+- **Ideas**:
+  - Extended historical data access (free: 30 days, premium: unlimited)
+  - Advanced biochemical insights and correlations
+  - Export data to CSV/PDF
+  - Personalized meal plans based on biometric trends
+
+#### 2. Meal Analysis with Camera
+- **Current Capability**: Gemini AI excels at recognizing food from photos
+- **Implementation**: Add camera permission to `metadata.json` (already has microphone)
+- **Feature**: Allow Ketuś to analyze the user's plate visually
+  - Estimate macronutrients from photo
+  - Evaluate ketogenic compatibility
+  - Provide instant feedback on meal choices
+  - Build meal history database for pattern recognition
+
+#### 3. Grounding & Data Sources
+- Future integration with external data sources for evidence-based recommendations
+- Link scientific studies to specific advice given by Ketuś
+
+### Development Guidelines
 
 When working on this project, keep in mind:
-1. The AI should maintain its strategic, long-term focus personality
-2. Metrics should only be logged when users explicitly provide them
-3. The glassmorphic design aesthetic should be preserved
-4. All user data is private and scoped to authenticated users
-5. The app emphasizes trends over individual data points
-6. Polish language should be maintained throughout
+1. **Personality Consistency**: The AI should maintain its strategic, long-term focus personality
+2. **Data Integrity**: Metrics should only be logged when users explicitly provide them
+3. **Design System**: The glassmorphic design aesthetic should be preserved
+4. **Privacy First**: All user data is private and scoped to authenticated users (RLS enforced)
+5. **Trend Focus**: The app emphasizes trends over individual data points
+6. **Language**: Polish language should be maintained throughout the UI
+7. **Mascot Usage**: Use appropriate Ketuś expressions for different contexts
+8. **Biochemistry Focus**: Always ground advice in hormonal and metabolic mechanisms
 
 ## Git History
 
