@@ -137,7 +137,7 @@ const App: React.FC = () => {
   if (isDataLoading) return (
     <div className="min-h-screen bg-[#0f041a] flex flex-col items-center justify-center text-purple-400 gap-4">
       <div className="w-20 h-20 animate-bounce">
-         <ImageWithFallback src="input_file_2.png" alt="Loading" fallback={<Bot size={64}/>} />
+         <ImageWithFallback src="/assets/ketus/ketus-waving.png" alt="Loading Ketuś" fallback={<Bot size={64}/>} />
       </div>
       <p className="animate-pulse font-bold uppercase tracking-widest text-xs">Kalibrowanie Ketusia...</p>
     </div>
@@ -151,12 +151,12 @@ const App: React.FC = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-purple-500/30 bg-purple-900/50 shadow-lg shadow-purple-500/20 flex-shrink-0">
-            <ImageWithFallback 
-              src="input_file_2.png" 
-              alt="Ketuś Logo" 
+          <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-purple-500/30 bg-purple-900/50 shadow-lg shadow-purple-500/20 flex-shrink-0 hover:scale-110 transition-transform">
+            <ImageWithFallback
+              src="/assets/ketus/ketus-waving.png"
+              alt="Ketuś Logo"
               fallback={<Bot className="text-purple-400" size={24} />}
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-cover"
             />
           </div>
           <div>
@@ -186,7 +186,7 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="glass rounded-3xl p-6 flex items-center gap-4 group hover:bg-white/10 transition-all border border-purple-500/10 shadow-xl">
               <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform overflow-hidden p-1">
-                <ImageWithFallback src="input_file_0.png" alt="Weight" fallback={<TrendingDown size={24}/>} className="w-full h-full object-contain" />
+                <ImageWithFallback src="/assets/ketus/ketus-confident.png" alt="Weight Ketuś" fallback={<TrendingDown size={24}/>} className="w-full h-full object-contain" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Waga</p>
@@ -203,7 +203,7 @@ const App: React.FC = () => {
 
             <div className="glass rounded-3xl p-6 flex items-center gap-4 group hover:bg-white/10 transition-all border border-blue-500/10 shadow-xl">
               <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform overflow-hidden p-1">
-                <ImageWithFallback src="input_file_1.png" alt="Energy" fallback={<Heart size={24}/>} className="w-full h-full object-contain" />
+                <ImageWithFallback src="/assets/ketus/ketus-excited.png" alt="Energy Ketuś" fallback={<Heart size={24}/>} className="w-full h-full object-contain" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Energia</p>
@@ -213,7 +213,7 @@ const App: React.FC = () => {
 
             <div className="glass rounded-3xl p-6 flex items-center gap-4 group hover:bg-white/10 transition-all border border-teal-500/10 shadow-xl">
               <div className="w-12 h-12 rounded-2xl bg-teal-500/20 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform overflow-hidden p-1">
-                <ImageWithFallback src="input_file_3.png" alt="Sleep" fallback={<Moon size={24}/>} className="w-full h-full object-contain" />
+                <ImageWithFallback src="/assets/ketus/ketus-smiling.png" alt="Sleep Ketuś" fallback={<Moon size={24}/>} className="w-full h-full object-contain" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 font-medium">Sen</p>
@@ -278,7 +278,7 @@ const App: React.FC = () => {
       {/* Floating Action Hint */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-full flex items-center gap-3 text-xs border border-purple-500/30 shadow-2xl z-40">
         <div className="w-6 h-6 rounded-full overflow-hidden border border-purple-500/50 bg-purple-900">
-           <ImageWithFallback src="input_file_0.png" alt="Pro" fallback={<Bot size={12}/>} className="w-full h-full object-cover" />
+           <ImageWithFallback src="/assets/ketus/ketus-confident.png" alt="Ketuś Badge" fallback={<Bot size={12}/>} className="w-full h-full object-cover" />
         </div>
         <span className="text-purple-400 font-bold uppercase tracking-tighter">Status:</span>
         <span className="text-gray-300 font-medium">Dane zsynchronizowane z chmurą Supabase.</span>

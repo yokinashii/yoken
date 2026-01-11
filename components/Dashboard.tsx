@@ -22,11 +22,11 @@ const Dashboard: React.FC<DashboardProps> = ({ logs }) => {
     return (
       <div className="flex flex-col items-center justify-center h-80 glass rounded-3xl p-8 text-center border-dashed border-2 border-white/5">
         <div className="w-32 h-32 mb-4 relative">
-          <ImageWithFallback 
-            src="input_file_4.png" 
-            alt="Thinking Ketuś" 
+          <ImageWithFallback
+            src="/assets/ketus/ketus-thinking.png"
+            alt="Thinking Ketuś"
             fallback={<Bot size={48} className="text-purple-500/20" />}
-            className="w-full h-full object-contain opacity-30" 
+            className="w-full h-full object-contain opacity-30"
           />
         </div>
         <p className="text-gray-500 font-medium">Analiza trendów wymaga danych.</p>
@@ -43,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({ logs }) => {
         {/* Weight Trend */}
         <div className="glass rounded-3xl p-6 h-80 relative overflow-hidden border border-purple-500/10 shadow-lg">
           <div className="absolute top-4 right-4 w-12 h-12 opacity-10 pointer-events-none group-hover:opacity-30 transition-opacity">
-            <ImageWithFallback src="input_file_0.png" alt="Mascot" fallback={<Bot />} className="w-full h-full object-contain" />
+            <ImageWithFallback src="/assets/ketus/ketus-confident.png" alt="Weight Mascot" fallback={<Bot />} className="w-full h-full object-contain" />
           </div>
           <h3 className="text-sm font-bold uppercase tracking-wider text-purple-400 mb-4 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-purple-500"></span>
@@ -72,7 +72,7 @@ const Dashboard: React.FC<DashboardProps> = ({ logs }) => {
         {/* Well-being & Sleep */}
         <div className="glass rounded-3xl p-6 h-80 relative overflow-hidden border border-blue-500/10 shadow-lg">
           <div className="absolute top-4 right-4 w-12 h-12 opacity-10 pointer-events-none">
-            <ImageWithFallback src="input_file_3.png" alt="Mascot" fallback={<Bot />} className="w-full h-full object-contain" />
+            <ImageWithFallback src="/assets/ketus/ketus-smiling.png" alt="Sleep Mascot" fallback={<Bot />} className="w-full h-full object-contain" />
           </div>
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-400 mb-4 flex items-center gap-2">
              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -99,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ logs }) => {
         <div className="glass rounded-3xl p-4 flex items-center gap-6 border-l-4 border-purple-500 shadow-xl bg-purple-900/10">
            <div className="w-20 h-20 flex-shrink-0 relative">
              <div className="absolute inset-0 bg-purple-500/10 blur-xl rounded-full"></div>
-             <ImageWithFallback src="input_file_2.png" alt="Happy Ketuś" fallback={<Bot size={32} className="text-purple-400" />} className="w-full h-full object-contain relative z-10" />
+             <ImageWithFallback src="/assets/ketus/ketus-excited.png" alt="Happy Ketuś" fallback={<Bot size={32} className="text-purple-400" />} className="w-full h-full object-contain relative z-10" />
            </div>
            <div>
              <p className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1">Analiza Strategiczna:</p>

@@ -37,9 +37,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, isLoad
     <div className="flex flex-col h-[600px] glass rounded-3xl overflow-hidden mt-6 shadow-2xl shadow-purple-900/20">
       <div className="p-4 bg-purple-900/20 border-b border-white/10 flex items-center gap-3">
         <div className="w-12 h-12 rounded-full border-2 border-purple-500/30 bg-purple-900/50 overflow-hidden shadow-md flex-shrink-0">
-          <ImageWithFallback 
-            src="input_file_4.png" 
-            alt="Ketuś Avatar" 
+          <ImageWithFallback
+            src="/assets/ketus/ketus-confident.png"
+            alt="Ketuś Avatar"
             fallback={<Bot size={24} className="text-purple-400" />}
             className="w-full h-full object-cover"
           />
@@ -58,9 +58,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, isLoad
           <div className="text-center text-gray-500 mt-12 flex flex-col items-center px-6">
             <div className="w-48 h-48 mb-6 relative">
               <div className="absolute inset-0 bg-purple-500/20 blur-3xl rounded-full animate-pulse"></div>
-              <ImageWithFallback 
-                src="input_file_1.png" 
-                alt="Ketuś Welcome" 
+              <ImageWithFallback
+                src="/assets/ketus/ketus-excited.png"
+                alt="Ketuś Welcome"
                 fallback={<div className="w-full h-full border-4 border-dashed border-purple-500/20 rounded-full flex items-center justify-center"><Bot size={64} className="text-purple-500/40" /></div>}
                 className="w-full h-full object-contain relative z-10"
               />
@@ -73,9 +73,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, isLoad
           <div key={m.id} className={`flex items-start gap-2 ${m.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
             {m.role === 'assistant' && (
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-purple-500/30 mt-1 bg-purple-900/50">
-                <ImageWithFallback 
-                  src="input_file_0.png" 
-                  alt="Ketuś" 
+                <ImageWithFallback
+                  src="/assets/ketus/ketus-confident.png"
+                  alt="Ketuś"
                   fallback={<Bot size={16} className="text-purple-400" />}
                   className="w-full h-full object-cover"
                 />
@@ -95,11 +95,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, isLoad
         {isLoading && (
           <div className="flex justify-start items-center gap-2">
             <div className="w-8 h-8 rounded-full overflow-hidden border border-purple-500/30 animate-pulse bg-purple-900/50">
-               <ImageWithFallback 
-                 src="input_file_4.png" 
-                 alt="Thinking" 
+               <ImageWithFallback
+                 src="/assets/ketus/ketus-thinking.png"
+                 alt="Ketuś Thinking"
                  fallback={<Bot size={16} className="text-purple-400" />}
-                 className="w-full h-full object-cover"
+                 className="w-full h-full object-cover animate-pulse"
                />
             </div>
             <div className="glass p-3 rounded-2xl rounded-tl-none flex items-center gap-2">
