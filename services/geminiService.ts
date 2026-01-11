@@ -2,7 +2,19 @@
 import { GoogleGenAI, Type, FunctionDeclaration } from "@google/genai";
 import { MetricLog } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Get API key from Vite environment variables
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// Safety check: Log error if API key is missing
+if (!GEMINI_API_KEY) {
+  console.error(
+    '❌ GEMINI API KEY ERROR: VITE_GEMINI_API_KEY is not set!\n' +
+    'Please ensure you have set the environment variable in your deployment platform (e.g., Vercel).\n' +
+    'For local development, create a .env.local file with: VITE_GEMINI_API_KEY=your_key_here'
+  );
+}
+
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || '' });
 
 const logMetricsDeclaration: FunctionDeclaration = {
   name: 'logMetrics',
@@ -55,8 +67,13 @@ CONSTRAINTS:
 `;
 
 export async function chatWithKetus(message: string, history: { role: 'user' | 'model', parts: { text: string }[] }[], onLogMetrics: (metrics: Partial<MetricLog>) => void) {
+  // Check if API key is available before making request
+  if (!GEMINI_API_KEY) {
+    throw new Error('Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in your environment variables.');
+  }
+
   const model = 'gemini-3-flash-preview';
-  
+
   const response = await ai.models.generateContent({
     model,
     contents: [...history, { role: 'user', parts: [{ text: message }] }],

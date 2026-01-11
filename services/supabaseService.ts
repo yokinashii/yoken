@@ -2,10 +2,28 @@
 import { createClient } from '@supabase/supabase-js';
 import { MetricLog } from '../types';
 
-const SUPABASE_URL = 'https://naniumtzpccvfipljsyy.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hbml1bXR6cGNjdmZpcGxqc3l5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5NDQ2NjgsImV4cCI6MjA4MzUyMDY2OH0.U6BwlL-t81HsazGZjIl1Yr6SnNYHt6emVzG5u8fYCgs';
+// Get Supabase credentials from Vite environment variables
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Safety check: Log error if credentials are missing
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.error(
+    '❌ SUPABASE CONFIGURATION ERROR:\n' +
+    (!SUPABASE_URL ? '  - VITE_SUPABASE_URL is not set!\n' : '') +
+    (!SUPABASE_ANON_KEY ? '  - VITE_SUPABASE_ANON_KEY is not set!\n' : '') +
+    'Please ensure you have set these environment variables in your deployment platform (e.g., Vercel).\n' +
+    'For local development, create a .env.local file with:\n' +
+    '  VITE_SUPABASE_URL=your_supabase_url\n' +
+    '  VITE_SUPABASE_ANON_KEY=your_supabase_anon_key'
+  );
+}
+
+// Create Supabase client with fallback to prevent crashes
+export const supabase = createClient(
+  SUPABASE_URL || 'https://placeholder.supabase.co',
+  SUPABASE_ANON_KEY || 'placeholder-key'
+);
 
 export async function fetchLogs() {
   const { data, error } = await supabase
